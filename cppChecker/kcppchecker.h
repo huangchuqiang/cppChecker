@@ -19,7 +19,7 @@ class KCppCheck
 public:
 	KCppCheck(string fileName);
 	~KCppCheck(void);
-	bool checkCppFile(bool veiwSrcCode = false);
+	bool checkCppFile(bool veiwSrcCode);
 
 private:
 	void coutErrorMsg(const int &index);
@@ -35,4 +35,3 @@ private:
 
 
 #endif //__KCPPCHECK_H__
-

@@ -15,9 +15,9 @@ int main(int argc, char* argv[])
 {
 	if (argc < 2)
 	{
-		//cout << "请指定cpp文件" << endl;
+		//默认打开文件
 		KCppCheck cppCheck("..\\cppchecker\\kcppchecker.cpp");
-		cppCheck.checkCppFile();
+		cppCheck.checkCppFile(true);
 	}
 	else
 	{

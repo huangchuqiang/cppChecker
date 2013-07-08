@@ -81,8 +81,13 @@ void KCppCheck::lineCheck(const string &line, const int &linePos)
 			{
 				if (line[linePos] == '}')
 				{
-					-- m_BraceCount;
-					coutErrorMsg(linePos == m_BraceCount ? 0 : 4);
+					if (linePos == line.size() - 1)
+					{
+						-- m_BraceCount;
+						coutErrorMsg(linePos == m_BraceCount ? 0 : 4);
+					}
+					else
+						sameLineBrace(line);
 				}
 				else
 				{
@@ -103,8 +108,9 @@ void KCppCheck::coutErrorMsg(const int &index)
 		"------不是以Tab缩进\n",
 		"------行尾有多余的空格、Tab等字符\n",
 		"------大括号没有对齐\n",
-		"------大括号在单独一行，或左右大括号在同一行\n"
+		"------大括号没有在单独一行，或左右大括号没有在同一行\n"
 	};
+
 	if (index > 0)
 	{
 		cout.flags(ios::right);
@@ -117,7 +123,6 @@ void KCppCheck::lineEndCheck(const string &line)
 	auto iter = line.rbegin();
 	if (*iter == ' ' || *iter == '	')
 		coutErrorMsg(3);
-
 }
 
 void KCppCheck::sameLineBrace(string line)
@@ -126,7 +131,7 @@ void KCppCheck::sameLineBrace(string line)
 	{
 		if (*iter == '\\')
 		{
-			if (*(++ iter) == '\"')
+			if (*(++ iter) == '\"' || *(++ iter) == '\'')
 			{
 				*iter = ' ';
 			}
@@ -149,7 +154,7 @@ void KCppCheck::sameLineBrace(string line)
 void KCppCheck::checkLeftBrace(const string &line)
 {
 	auto startIter = line.begin();
-	auto braceIter = find (line.begin(), line.end(), '{');
+	auto braceIter = find(line.begin(), line.end(), '{');
 	while (braceIter != line.end())
 	{
 		auto quoteIter = find(startIter, braceIter, '\'');
@@ -170,7 +175,7 @@ void KCppCheck::checkLeftBrace(const string &line)
 void KCppCheck::checkRightBrace(const string &line)
 {
 	auto startReverseIter = line.rbegin();
-	auto braceReverseIter = find (line.rbegin(), line.rend(), '}');
+	auto braceReverseIter = find(line.rbegin(), line.rend(), '}');
 	while (braceReverseIter != line.rend())
 	{
 		auto quoteReverseIter = find(startReverseIter, braceReverseIter, '\'');
